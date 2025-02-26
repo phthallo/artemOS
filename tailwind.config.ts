@@ -11,6 +11,9 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        terminal: "#282828",
+        polarblue: "#8AC9DC",
+        darkblue: "#3774A0"
       },
     },
   },
