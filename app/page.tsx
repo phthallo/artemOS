@@ -81,7 +81,7 @@ export default function Home() {
       { session.status !== "loading" ? 
       <div className = "h-screen w-screen overflow-hidden bg-[url(/bg.png)] bg-cover">
         <div className = "absolute z-2 w-screen h-screen backdrop-sepia-[.55]"/>
-        <div className = "relative h-screen w-screen" id="desktop">
+        <div className = "relative h-[130vh] w-screen" id="desktop">
 
         {/* Screens that only show if you're logged in */}
         { session.status === "authenticated" ? 
@@ -145,13 +145,13 @@ export default function Home() {
             <div className = "relative h-screen w-screen">
               <Window id = "Music" ref={ref} closeable={true} position = {{x: 1010, y: 50}} openState={{isOpen, setIsOpen}}>
                   <div className = "w-1/4 rounded-b-lg">
-                    <iframe className = "rounded-b-lg" width="410" height="300" src="https://www.youtube.com/embed/xMiv10KdaNU?si=PwS0ULo46hEJvlOc" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
+                    <iframe className = "rounded-b-lg" width="410" height="240" src="https://www.youtube.com/embed/xMiv10KdaNU?si=PwS0ULo46hEJvlOc" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
                   </div>
               </Window>
               </div>
           </div>
 
-          <div className = "absolute bottom-0 w-screen h-16 flex items-center flex-row justify-center bg-opacity-75 bg-gray-200 border border-t-white">
+          <div className = "absolute bottom-0 w-screen h-16 z-40 flex items-center flex-row justify-center bg-opacity-75 bg-gray-200 border border-t-white">
               { apps.map((app, index) => 
                 <button key={index} className = {`${session.status !== "authenticated" && !app.showUnauthed ? "hidden": null} mx-1 align-middle p-1 text-darkblue hover:text-darkblue/75 bg-white rounded-lg border active:border-black`}
                   onDoubleClick={() => setIsOpen((window: string[]) => [...window, app.window])}>
