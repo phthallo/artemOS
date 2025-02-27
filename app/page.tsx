@@ -89,7 +89,7 @@ export default function Home() {
           <Window id="Dashboard" ref={ref} closeable={true} position={{x: 50, y: 50}} openState={{isOpen, setIsOpen}}>
                 <div className = "w-[400px] p-5 bg-terminal rounded-b-lg">
                     <Image alt="Artemos (ASCII)" draggable={false} src = "/artemos.png" width={0} height={0} sizes={"100vw"} style={{width: "100%", height: "auto"}}/>
-                    <pre className = "flex flex-col gap-10 font-monospace whitespace-pre-wrap text-center">
+                    <pre className = "flex flex-col gap-3 font-monospace whitespace-pre-wrap text-center">
                        <p>Your interplanetary dashboard for the Athena program! 🚀</p>
                       <p>Signed in as <span className = "text-polarblue">{session.data.user.name}</span></p>
                     </pre>
