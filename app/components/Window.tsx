@@ -24,9 +24,10 @@ const Window = forwardRef<HTMLDivElement, WindowProps>((props, ref) => {
                 nodeRef={ref as RefObject<HTMLElement>}
                 bounds="parent"
                 defaultPosition={props.position}>
-                <div id={props.id} ref = {ref} className="absolute bg-terminal rounded-b-md">
-                    <div className="w-full bg-white h-full p-2 rounded-t-md">
-                        { props.closeable ? <button className="border border-black px-2 text-sm rounded-lg text-black" onClick={() => props.openState.setIsOpen((prev: string[]) => [...prev.filter(window => window !== props.id) ])}>x</button> : null }
+                <div id={props.id} ref = {ref} className="absolute shadow-lg">
+                    <div className="flex items-center justify-center flex-row w-full bg-white h-full p-2 rounded-t-md shadow-lg">
+                        { props.closeable ? <button className="absolute left-2 border border-black px-1 text-sm rounded-lg text-black font-titles hover:text-gray-600 hover:border-gray-600" onClick={() => props.openState.setIsOpen((prev: string[]) => [...prev.filter(window => window !== props.id) ])}>✕</button> : null }
+                    <span className = "mx-auto text-gray-800 font-titles">{props.id}</span>
                     </div>
                     {props.children}
                 </div>

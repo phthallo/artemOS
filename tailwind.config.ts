@@ -16,6 +16,9 @@ export default {
         darkblue: "#3774A0"
       },
     },
+    fontFamily: { 
+      titles: ['Inter', "sans"],
+      monospace: ['Space Mono', "mono"]}
   },
   plugins: [],
 } satisfies Config;
