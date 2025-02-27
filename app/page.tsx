@@ -72,7 +72,7 @@ export default function Home() {
       if (data){
         setLocalState(data as fetchResponse)
       }
-    }, [localState])
+    }, [data])
 
   
 
