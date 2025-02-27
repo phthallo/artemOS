@@ -1,6 +1,6 @@
 # artemOS
 
-A 'Web OS'-styled interface for participants in the Athena Program.
+A <a href = "https://artemOS.phthallo.com">'Web OS'-styled interface and dashboard</a> for participants in Hack Club's Athena Program.
 
 ## Development
 1. Clone the repository
