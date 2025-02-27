@@ -6,7 +6,7 @@ const airtable = new Airtable({
     apiKey: process.env.AIRTABLE_API_KEY
 }).base(process.env.AIRTABLE_BASE_ID!)
 
-export async function GET({request}: {request: NextResponse }) {
+export async function GET() {
     const session = await auth();
     const projects = JSON.parse(JSON.stringify(await airtable("YSWS Projects").select(
         {filterByFormula: `AND({Email} = "${session?.user.email}", IF({Created} > DATETIME_PARSE('2025-01-01', 'YYYY-MM-DD'), TRUE(), FALSE()))`,
