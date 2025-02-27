@@ -45,11 +45,7 @@ export default function Home() {
     const session = useSession();
     const [ isOpen, setIsOpen ] = useState(['Dashboard', 'Music'])
     const { data, error, isLoading } = useSWR('/api/user', fetcher)
-    if (isLoading){
-      return (
-        <div className = "h-screen w-screen bg-terminal font-monospace p-10 text-white">Loading...</div>
-      )
-    }
+
     return (
       <>
       { session.status !== "loading" ? 
