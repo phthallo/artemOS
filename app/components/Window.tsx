@@ -37,5 +37,6 @@ const Window = forwardRef<HTMLDivElement, WindowProps>((props, ref) => {
         </>
     )
 })
+Window.displayName = 'Window';
 
 export default Window

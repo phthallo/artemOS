@@ -60,7 +60,7 @@ export default function Home() {
 
               { session.status === "authenticated" ? 
                 <div className = "w-[400px] p-5 bg-terminal rounded-b-lg">
-                    <img draggable={false} src = "/artemos.png"/>
+                    <Image alt="Artemos (ASCII)" draggable={false} src = "/artemos.png"/>
                     <pre className = "flex flex-col gap-10 font-monospace whitespace-pre-wrap text-center">
                        <p>Your interplanetary dashboard for the Athena program! 🚀</p>
                       <p>Signed in as <span className = "text-polarblue">{session.data.user.name}</span></p>
