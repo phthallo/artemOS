@@ -34,9 +34,10 @@ const apps = [
 ]
 
 function calculateCompletion(projects: number, wakaSeconds: number){
-  const hourCompletion = (wakaSeconds / 3600) / 30 / 2 /* convert to hours then divide by two for weight */
-  const projectCompletion = (projects / 3) / 2
-  return hourCompletion + projectCompletion >= 1 ? 100 : (hourCompletion + projectCompletion) * 100
+  const hourCompletion = (wakaSeconds / 3600) >= 30 ? 1 : (wakaSeconds / 3600) / 30 
+  const projectCompletion = (projects / 3) >= 1 ? 1 : projects / 3
+  console.log(hourCompletion, projectCompletion)
+  return hourCompletion + projectCompletion >= 2 ? 100 : (hourCompletion + projectCompletion)/2 * 100
 }
 
 export default function Home() {
@@ -44,17 +45,19 @@ export default function Home() {
     const session = useSession();
     const [ isOpen, setIsOpen ] = useState(['Dashboard', 'Music'])
     const { data, error, isLoading } = useSWR('/api/user', fetcher)
-    let percentage = 0
-    if (!isLoading){
-      percentage =  calculateCompletion((data as any).projects.length, (data as any).wakatime["total_seconds"])
+    if (isLoading){
+      return (
+        <div className = "h-screen w-screen bg-terminal font-monospace p-10 text-white">Loading...</div>
+      )
     }
     return (
       <>
-      { session.status !== "loading" && !isLoading ? 
+      { session.status !== "loading" ? 
       <div className = "h-screen w-screen overflow-hidden bg-[url(/bg.png)] bg-cover">
         <div className = "absolute z-2 w-screen h-screen backdrop-sepia-[.55]"/>
         <div className = "relative h-screen w-screen">
           <Window id="Dashboard" ref={ref} closeable={true} position={{x: 50, y: 50}} openState={{isOpen, setIsOpen}}>
+
               { session.status === "authenticated" ? 
                 <div className = "w-[400px] p-5 bg-terminal rounded-b-lg">
                     <img draggable={false} src = "/artemos.png"/>
@@ -64,9 +67,9 @@ export default function Home() {
                     </pre>
                 </div>
                 : 
-                <div className = "w-[450px] p-5 text-mono bg-terminal rounded-b-lg">
+                <div className = "w-[450px] p-5 font-monospace bg-terminal rounded-b-lg">
                   <span className = "bold text-polarblue">user@artermOS:~$</span>
-                  <p className = "my-3"><span className="underline decoration-wavy p-2">Something went wrong</span> - you're not signed in with Slack!</p>
+                  <p className = "my-3"><span className="underline decoration-wavy py-2">We couldn't load your data</span> - you're not signed in with Slack!</p>
                   <button className = "text-white p-3 bg-darkblue" onClick={()=> signIn(undefined, {callbackUrl: '/'})}>Click me to sign in</button>
                 </div> 
               }
@@ -74,37 +77,47 @@ export default function Home() {
 
           <Window id="WakaTime" ref={ref} closeable={true} position={{x: 50, y: 375}} openState={{isOpen, setIsOpen}}>
             <div className = "w-[400px] h-48 p-5 font-monospace bg-slate-600 rounded-b-lg text-center">
-              {(data as any).wakatime.human_readable_total} spent programming this year. Wow!
+              { session.status === "authenticated" ? <span>{(data as any).wakatime.human_readable_total} spent programming this year. Wow!</span> : null }
             </div>
           </Window> 
 
           <Window id="2025_Projects" ref={ref} closeable={true} position={{x: 480, y: 280}} openState={{isOpen, setIsOpen}}>
             <div className = "min-w-[500px] max-h-[290px] overflow-scroll p-5 font-monospace bg-slate-600 rounded-b-lg">
-              <span className = "text-polarblue">{((data as any)?.projects).length} projects completed this year.</span>
+            {session.status === "authenticated" ?
+            <>
+              <span className = "text-polarblue"> {((data as any)?.projects).length} projects completed this year.</span>
                 <div className = "grid grid-cols-2 gap-6">
-                  { 
-                    (data as any)?.projects.map((project: any, index: number) => 
+
+                    {(data as any)?.projects.map((project: any, index: number) => 
                     <div key={index} className = "flex flex-col">
                       <span>{(project["fields"]["YSWS"])} - <a className = "bold" href= {project["fields"]["Playable URL"]}>Project</a></span>
                       <a href = {project["fields"]["Code URL"]}>Repository</a>
                     </div>
                   )}
+
                 </div>
+                </>
+                : null }
             </div>
           </Window>
 
           <Window id="???" ref={ref} closeable={true} position={{x: 480, y: 50}} openState={{isOpen, setIsOpen}}>
             <div className = "min-w-[500px] max-h-[300px] overflow-scroll p-5 font-monospace text-center text-white bg-terminal rounded-b-lg">
+              { session.status === "authenticated" ? 
+              <>
               <div className = "h-20 rounded-md bg-darkblue">
-                <div className = "h-20 rounded-md bg-polarblue" style={{ width: percentage + "%"}}/>
+                <div className = "h-20 rounded-md bg-polarblue" style={{ width: calculateCompletion((data as any).projects.length, (data as any).wakatime["total_seconds"]) + "%"}}/>
               </div>
               
-              <span className = "">#̷̨̖͔̪̠͋̔̐̈́̏̓̀̎̆̄̔̚̚͝E̴̫͉͚̩͓̹̥̖̠͂̇͐̆̈́̉̉̇͂͜r̵̛̞͕̬̈̓̈́̍͑͑̂́̌̽̈́͝ṙ̷̨̦̪͓̝̘̬͓̘̬̥͖̪̘̍̅̃̎͠͝o̵͕̗͚̯͍͈̙̟̗͆͝͠͝r̵̠̻̳̜̹͉͝[̸̬̻̞̯̖͔̈́̑́̔̈́̌͛̔̇C̶̪̮̯͇̲̤̃̇̀͗̀̈̔̾͜ő̵̖͚̯̑͋̓͘͜ȑ̸̮̜̰̲͔̻͓̲̰͇͈̘͂̎̾̇̇͋͝ͅŗ̶̧̡̫̣͎͇͂̿̿̄̈́u̸͕͂́̒͗̋͛̾̌̍̚͘̚p̴̛̩͔͉͕͍̗̯̰̹̫̈́̆͗̂͘͜ͅt̶̢̢͕̯̦̺̹̠̖̿̏͒̇̀ě̷̹͔̣͔̦͔͔͙̎̏̂d̴̡̡̝͇͔͙̳̭͇͍͖̆͝ͅͅ]̸̤̠̺͔̳͕̈́͋͜͝ is {percentage}% loaded... </span>
+              <span className = "">#̷̨̖͔̪̠͋̔̐̈́̏̓̀̎̆̄̔̚̚͝E̴̫͉͚̩͓̹̥̖̠͂̇͐̆̈́̉̉̇͂͜r̵̛̞͕̬̈̓̈́̍͑͑̂́̌̽̈́͝ṙ̷̨̦̪͓̝̘̬͓̘̬̥͖̪̘̍̅̃̎͠͝o̵͕̗͚̯͍͈̙̟̗͆͝͠͝r̵̠̻̳̜̹͉͝[̸̬̻̞̯̖͔̈́̑́̔̈́̌͛̔̇C̶̪̮̯͇̲̤̃̇̀͗̀̈̔̾͜ő̵̖͚̯̑͋̓͘͜ȑ̸̮̜̰̲͔̻͓̲̰͇͈̘͂̎̾̇̇͋͝ͅŗ̶̧̡̫̣͎͇͂̿̿̄̈́u̸͕͂́̒͗̋͛̾̌̍̚͘̚p̴̛̩͔͉͕͍̗̯̰̹̫̈́̆͗̂͘͜ͅt̶̢̢͕̯̦̺̹̠̖̿̏͒̇̀ě̷̹͔̣͔̦͔͔͙̎̏̂d̴̡̡̝͇͔͙̳̭͇͍͖̆͝ͅͅ]̸̤̠̺͔̳͕̈́͋͜͝ is {calculateCompletion((data as any).projects.length, (data as any).wakatime["total_seconds"])}% loaded... </span>
 
-              <p>{ percentage >= 100 ? "Stay tuned for more." : "Error: Missing requirements"}</p>
-            
+              <p>{ calculateCompletion((data as any).projects.length, (data as any).wakatime["total_seconds"]) >= 100 ? "Stay tuned for more." : "Error: Missing requirements"}</p>
+              </>
+              : null }
             </div>
           </Window>
+
+
 
           <Window id = "Music" ref={ref} closeable={true} position = {{x: 1010, y: 50}} openState={{isOpen, setIsOpen}}>
             <div className = "w-1/4 rounded-b-lg">

@@ -9,7 +9,7 @@ const airtable = new Airtable({
 export async function GET({request}: {request: NextResponse }) {
     const session = await auth();
     const projects = JSON.parse(JSON.stringify(await airtable("YSWS Projects").select(
-        {filterByFormula: `AND({Email} = "${session?.user.email}", IF(CREATED_TIME() > '2025-01-01', TRUE(), FALSE()))`,
+        {filterByFormula: `AND({Email} = "${session?.user.email}", IF({Created} > DATETIME_PARSE('2025-01-01', 'YYYY-MM-DD'), TRUE(), FALSE()))`,
     fields: ["Playable URL", "Code URL", "Screenshot", "YSWS"]}
     ).all()))
     const wakaTime = (await fetch(`https://waka.hackclub.com/api/compat/wakatime/v1/users/${session?.slack_id}/stats/year?category=coding`)).json()
