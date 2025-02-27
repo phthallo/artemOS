@@ -1,4 +1,4 @@
-# artermOS
+# artemOS
 
 A 'Web OS'-styled interface for participants in the Athena Program.
 
