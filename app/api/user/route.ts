@@ -18,7 +18,6 @@ export async function GET() {
         if (wakaTime.status === 200){
             const response = {
                 projects: projects.map((project) => {
-                    console.log(project["fields"]["Screenshot"])
                     return  { 
                         "Playable URL": project["fields"]["Playable URL"] ? project["fields"]["Playable URL"] : null ,
                         "Code URL": project["fields"]["Code URL"] ? project["fields"]["Code URL"] : null,

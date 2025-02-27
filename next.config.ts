@@ -4,9 +4,15 @@ const nextConfig: NextConfig = {
   /* config options here */
   images: {
     dangerouslyAllowSVG: true,
-    domains: [
-      'v5.airtableusercontent.com',
-      'hc-cdn.hel1.your-objectstorage.com'
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "v5.airtableusercontent.com"
+      },
+      {
+        protocol: "https",
+        hostname: "hc-cdn.hel1.your-objectstorage.com"
+      }
     ]
   }
 };

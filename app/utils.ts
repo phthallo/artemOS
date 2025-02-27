@@ -15,6 +15,4 @@ export async function fetcher<JSON = any>(
         throw error
       }
     return res.json()
-  
-    
   }

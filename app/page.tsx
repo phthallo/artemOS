@@ -111,7 +111,7 @@ export default function Home() {
                       <div className = "w-full h-24 relative">
                         {project["Screenshot"] ? <Image alt ="alt" objectFit="cover" fill={true} src = {project["Screenshot"]}/> : <Image alt = "No picture" fill={true} objectFit="contain" src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/f557c087e406a0015ea1aa00bb9fc5ee8ab73f6a_image.png"/> }
                       </div>
-                      <span className = "text-polarblue">{(project["YSWS"])} - <a className = "bold" href= {project["Playable URL"]}>Project</a></span>
+                      <span className = "text-polarblue">{(project["YSWS"])} - <a className = "bold" href= {project["Playable URL"]}>{project["Code URL"].replace(/\/$/, "").split("/").pop()}</a></span>
                       <a href = {project["Code URL"]}>Repository</a>
                     </div>
                   )}
