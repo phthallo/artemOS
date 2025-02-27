@@ -69,7 +69,7 @@ export default function Home() {
                 : 
                 <div className = "w-[450px] p-5 font-monospace bg-terminal rounded-b-lg">
                   <span className = "bold text-polarblue">user@artermOS:~$</span>
-                  <p className = "my-3"><span className="underline decoration-wavy py-2">We couldn`&apos;t load your data</span> - you`&apos;re not signed in with Slack!</p>
+                  <p className = "my-3"><span className="underline decoration-wavy py-2">We couldn&apos;t load your data</span> - you&apos;re not signed in with Slack!</p>
                   <button className = "text-white p-3 bg-darkblue" onClick={()=> signIn(undefined, {callbackUrl: '/'})}>Click me to sign in</button>
                 </div> 
               }
