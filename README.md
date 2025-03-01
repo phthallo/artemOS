@@ -1,6 +1,6 @@
 # artemOS
 
-A <a href = "https://artemOS.phthallo.com">'Web OS'-styled interface and dashboard</a> for participants in Hack Club's Athena Program.
+artemOS (pronounced the same as *artemis*) <a href = "https://artemOS.phthallo.com">'Web OS'-styled interface and dashboard</a> for participants in Hack Club's Athena Program.
 
 ## Development
 1. Clone the repository

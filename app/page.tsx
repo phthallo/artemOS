@@ -52,6 +52,10 @@ export default function Home() {
     const ref = createRef<HTMLDivElement>()
     const session = useSession();
     const [ isOpen, setIsOpen ] = useState(['Dashboard', 'Music', '???', "WakaTime", "2025_Projects"])
+    const [ windowOrder, setWindowOrder ] = useState([''])
+    const states = {
+      isOpen, setIsOpen, windowOrder, setWindowOrder
+    }
     const [ localState, setLocalState ] = useState({
         projects: [],
         wakatime: {
@@ -86,7 +90,7 @@ export default function Home() {
         {/* Screens that only show if you're logged in */}
         { session.status === "authenticated" ? 
           <>
-          <Window id="Dashboard" ref={ref} closeable={true} position={{x: 50, y: 50}} openState={{isOpen, setIsOpen}}>
+          <Window id="Dashboard" ref={ref} closeable={true} position={{x: 50, y: 50}} states={states}>
                 <div className = "w-[400px] p-5 bg-terminal rounded-b-lg">
                     <Image alt="Artemos (ASCII)" draggable={false} src = "/artemos.png" width={0} height={0} sizes={"100vw"} style={{width: "100%", height: "auto"}}/>
                     <pre className = "flex flex-col gap-3 font-monospace whitespace-pre-wrap text-center">
@@ -96,13 +100,13 @@ export default function Home() {
                 </div>
           </Window>
 
-          <Window id="WakaTime" ref={ref} closeable={true} position={{x: 50, y: 375}} openState={{isOpen, setIsOpen}}>
+          <Window id="WakaTime" ref={ref} closeable={true} position={{x: 50, y: 375}} states={states}>
             <div className = "w-[400px] flex items-center justify-center h-48 p-5 font-monospace bg-slate-600 rounded-b-lg text-center">
               <span>{(localState).wakatime.human_readable_total} spent programming this year. Wow!</span>
             </div>
           </Window> 
 
-          <Window id="2025_Projects" ref={ref} closeable={true} position={{x: 480, y: 280}} openState={{isOpen, setIsOpen}}>
+          <Window id="2025_Projects" ref={ref} closeable={true} position={{x: 480, y: 280}} states={states}>
             <div className = "min-w-[500px] max-h-[290px] overflow-scroll p-5 font-monospace bg-slate-600 rounded-b-lg">
               <span className = "text-polarblue"> {((localState)?.projects).length} projects completed this year.</span>
                 <div className = "grid grid-cols-2 gap-6">
@@ -119,7 +123,7 @@ export default function Home() {
             </div>
           </Window>
 
-          <Window id="???" ref={ref} closeable={true} position={{x: 480, y: 50}} openState={{isOpen, setIsOpen}}>
+          <Window id="???" ref={ref} closeable={true} position={{x: 480, y: 50}} states={states}>
             <div className = "min-w-[500px] max-h-[300px] overflow-scroll p-5 font-monospace text-center text-white bg-terminal rounded-b-lg">
               <div className = "h-20 rounded-md bg-darkblue">
                 <div className = "h-20 rounded-md bg-polarblue" style={{ width: calculateCompletion((localState).projects.length, (localState).wakatime["total_seconds"]) + "%"}}/>
@@ -133,7 +137,7 @@ export default function Home() {
           </>
             :
             /* Alternate versions of screens to show when unauthed */
-                <Window id="Dashboard" ref={ref} closeable={true} position={{x: 50, y: 50}} openState={{isOpen, setIsOpen}}>
+                <Window id="Dashboard" ref={ref} closeable={true} position={{x: 50, y: 50}} states={states}>
                   <div className = "w-[450px] p-5 font-monospace bg-terminal rounded-b-lg">
                     <span className = "bold text-polarblue">user@artemOS:~$</span>
                     <p className = "my-3"><span className="underline decoration-wavy py-2">We couldn&apos;t load your data</span> - you&apos;re not signed in with Slack!</p>
@@ -143,7 +147,7 @@ export default function Home() {
             }
             {/* Screens which are open regardless of auth status*/}
             <div className = "relative h-screen w-screen">
-              <Window id = "Music" ref={ref} closeable={true} position = {{x: 1010, y: 50}} openState={{isOpen, setIsOpen}}>
+              <Window id = "Music" ref={ref} closeable={true} position = {{x: 1010, y: 50}} states={states}>
                   <div className = "w-1/4 rounded-b-lg">
                     <iframe className = "rounded-b-lg" width="410" height="240" src="https://www.youtube.com/embed/xMiv10KdaNU?si=PwS0ULo46hEJvlOc" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
                   </div>
