@@ -155,7 +155,7 @@ export default function Home() {
               </div>
           </div>
 
-          <div className = "absolute bottom-0 w-screen h-16 z-40 flex items-center flex-row justify-center bg-opacity-75 bg-gray-200 border border-t-white">
+          <div className = "absolute bottom-0 w-screen h-16 z-4 flex items-center flex-row justify-center bg-opacity-75 bg-gray-200 border border-t-white">
               { apps.map((app, index) => 
                 <button key={index} className = {`${session.status !== "authenticated" && !app.showUnauthed ? "hidden": null} mx-1 align-middle p-1 text-darkblue hover:text-darkblue/75 bg-white rounded-lg border active:border-black`}
                   onDoubleClick={() => setIsOpen((window: string[]) => [...window, app.window])}>
