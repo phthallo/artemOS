@@ -20,7 +20,7 @@ type WindowProps = {
 }
 
 const Window = forwardRef<HTMLDivElement, WindowProps>((props, ref) => {
-    function onDrag(){ 
+    function onInteract(){ 
         props.states.setWindowOrder(allWindows => [...allWindows.filter(window => window !== props.id), props.id]);
     }
     return (
@@ -30,8 +30,8 @@ const Window = forwardRef<HTMLDivElement, WindowProps>((props, ref) => {
                 nodeRef={ref as RefObject<HTMLElement>}
                 bounds="#desktop"
                 defaultPosition={props.position}
-                onDrag={onDrag}>
-                <div id={props.id} ref = {ref} className="absolute shadow-lg" style={{
+                onDrag={onInteract}>
+                <div id={props.id} ref = {ref} className="absolute shadow-lg" onClick={onInteract} style={{
                     zIndex: props.states.windowOrder.indexOf(props.id) !== -1 
                         ? 10 * props.states.windowOrder.indexOf(props.id) 
                         : 5

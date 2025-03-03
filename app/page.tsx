@@ -161,12 +161,17 @@ export default function Home() {
 
               <Window id="Events" ref={ref} closeable={true} position={{x: 1010, y: 350}} states={states}>
                 <div className = "w-[410px] max-h-[225px] overflow-scroll p-5 font-monospace text-center text-white bg-terminal rounded-b-lg">
-                        {data ? data[1].map((event, index) => 
-                          <div className = "bg-polarblue/75 p-2 m-2 text-left rounded-md" key={index}>
-                            <b>{event.title}</b> - {event.leader}
-                            <div className = "text-sm flex flex-row items-center gap-1"><CalendarDateRangeIcon className = "size-4 inline"/><a href = {event.cal}>{(new Date(event.start)).toLocaleString()}</a></div>
-                            </div>
-                        ) : <div>No upcoming events :{'('}</div>}
+                        {data 
+                          ? data[1] 
+                            ? data[1].map((event, index) => 
+                              <div className = "bg-polarblue/75 p-2 m-2 text-left rounded-md" key={index}>
+                                <b>{event.title}</b> - {event.leader}
+                                <div className = "text-sm flex flex-row items-center gap-1"><CalendarDateRangeIcon className = "size-4 inline"/><a href = {event.cal}>{(new Date(event.start)).toLocaleString()}</a></div>
+                              </div>
+                              ) 
+                            : <div>No upcoming events :{'('}</div> 
+                            : <div>Something went wrong!</div>
+                            }
                 </div>
               </Window>
               </div>
