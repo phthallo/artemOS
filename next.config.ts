@@ -12,6 +12,10 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "hc-cdn.hel1.your-objectstorage.com"
+      },
+      {
+        protocol: "https",
+        hostname: "*.hackclub.com"
       }
     ]
   }

@@ -3,6 +3,11 @@ interface nError extends Error {
     status: number
   }
   
+export function multiFetcher(urls){
+  const f = url => fetcher(url, {method: "GET"})
+  return Promise.all(urls.map(url => f(url)))
+}
+
 export async function fetcher<JSON = any>(
     input: RequestInfo,
     init?: RequestInit

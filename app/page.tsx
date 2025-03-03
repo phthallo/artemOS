@@ -4,8 +4,8 @@ import { signIn } from "next-auth/react";
 import { useSession } from "next-auth/react";
 import Window from "./components/Window";
 import { createRef, useState, useEffect } from "react";
-import { CommandLineIcon, ClockIcon, NumberedListIcon, QuestionMarkCircleIcon, MusicalNoteIcon} from "@heroicons/react/24/outline";
-import { fetcher } from "./utils";
+import { CommandLineIcon, ClockIcon, NumberedListIcon, QuestionMarkCircleIcon, MusicalNoteIcon, CalendarDateRangeIcon} from "@heroicons/react/24/outline";
+import { multiFetcher, fetcher } from "./utils";
 import useSWR from "swr";
 import { safeData } from "@/types";
 
@@ -39,6 +39,11 @@ const apps = [
     window: "Music",
     icon: <MusicalNoteIcon className="size-10"/>,
     showUnauthed: true
+  },
+  {
+    window: "Events",
+    icon: <CalendarDateRangeIcon className="size-10"/>,
+    showUnauthed: true
   }
 ]
 
@@ -51,7 +56,7 @@ function calculateCompletion(projects: number, wakaSeconds: number){
 export default function Home() {
     const ref = createRef<HTMLDivElement>()
     const session = useSession();
-    const [ isOpen, setIsOpen ] = useState(['Dashboard', 'Music', '???', "WakaTime", "2025_Projects"])
+    const [ isOpen, setIsOpen ] = useState(['Dashboard', 'Music', '???', "WakaTime", "2025_Projects", "Events"])
     const [ windowOrder, setWindowOrder ] = useState([''])
     const states = {
       isOpen, setIsOpen, windowOrder, setWindowOrder
@@ -64,17 +69,16 @@ export default function Home() {
         }
       }
     )
-
-      const {  error, data, isLoading } = useSWR('/api/user', fetcher, {
-        keepPreviousData: true,
-        onSuccess: (data) => {
-            setLocalState(data as fetchResponse)
-        }
-        })
-    
+    const urls = [`/api/user`, 'https://events.hackclub.com/api/events/upcoming/']
+    const { data, error, isLoading } = useSWR(urls, multiFetcher, {
+      keepPreviousData: true,
+      onSuccess: (data) => {
+        setLocalState(data[0] as fetchResponse)
+      }
+    })
     useEffect(() => {
       if (data){
-        setLocalState(data as fetchResponse)
+        setLocalState(data[0] as fetchResponse)
       }
     }, [data])
 
@@ -108,7 +112,9 @@ export default function Home() {
 
           <Window id="2025_Projects" ref={ref} closeable={true} position={{x: 480, y: 280}} states={states}>
             <div className = "min-w-[500px] max-h-[290px] overflow-scroll p-5 font-monospace bg-slate-600 rounded-b-lg">
-              <span className = "text-polarblue"> {((localState)?.projects).length} projects completed this year.</span>
+              <p className = "text-polarblue flex justify-center"> 
+                  {((localState).projects).length} project{((localState).projects).length == 1 ? null : "s"} completed this year.{' '}
+                  {localState.projects.length === 0 ? "Get shipping!" : "Keep on building!"}</p>
                 <div className = "grid grid-cols-2 gap-6">
                     {(localState)?.projects.map((project: safeData, index: number) => 
                     <div key={index} className = "flex flex-col gap-2 py-3">
@@ -133,6 +139,17 @@ export default function Home() {
 
               <p>{ calculateCompletion((localState).projects.length, (localState).wakatime["total_seconds"]) >= 100 ? "Stay tuned for more." : "Error: Missing requirements"}</p>
             </div>
+          </Window>
+
+          <Window id="Events" ref={ref} closeable={true} position={{x: 1010, y: 350}} states={states}>
+          <div className = "w-[410px] max-h-[225px] overflow-scroll p-5 font-monospace text-center text-white bg-terminal rounded-b-lg">
+                  {data ? data[1].map((event, index) => 
+                    <div className = "bg-polarblue/75 p-2 m-2 text-left rounded-md" key={index}>
+                      <b>{event.title}</b> - {event.leader}
+                      <div className = "text-sm flex flex-row items-center gap-1"><CalendarDateRangeIcon className = "size-4 inline"/><a href = {event.cal}>{(new Date(event.start)).toLocaleString()}</a></div>
+                      </div>
+                  ) : <div>No upcoming events :{'('}</div>}
+          </div>
           </Window>
           </>
             :

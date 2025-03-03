@@ -4,7 +4,7 @@ import SlackProvider from "next-auth/providers/slack"
 
 export const config: NextAuthConfig = {
   theme: {
-    logo: "https://next-auth.js.org/img/logo/logo-sm.png",
+    logo: "https://ascend.hackclub.com/favicon.svg",
   },
   debug: true,
   providers: [
