@@ -140,17 +140,6 @@ export default function Home() {
               <p>{ calculateCompletion((localState).projects.length, (localState).wakatime["total_seconds"]) >= 100 ? "Stay tuned for more." : "Error: Missing requirements"}</p>
             </div>
           </Window>
-
-          <Window id="Events" ref={ref} closeable={true} position={{x: 1010, y: 350}} states={states}>
-          <div className = "w-[410px] max-h-[225px] overflow-scroll p-5 font-monospace text-center text-white bg-terminal rounded-b-lg">
-                  {data ? data[1].map((event, index) => 
-                    <div className = "bg-polarblue/75 p-2 m-2 text-left rounded-md" key={index}>
-                      <b>{event.title}</b> - {event.leader}
-                      <div className = "text-sm flex flex-row items-center gap-1"><CalendarDateRangeIcon className = "size-4 inline"/><a href = {event.cal}>{(new Date(event.start)).toLocaleString()}</a></div>
-                      </div>
-                  ) : <div>No upcoming events :{'('}</div>}
-          </div>
-          </Window>
           </>
             :
             /* Alternate versions of screens to show when unauthed */
@@ -168,6 +157,17 @@ export default function Home() {
                   <div className = "w-1/4 rounded-b-lg">
                     <iframe className = "rounded-b-lg" width="410" height="240" src="https://www.youtube.com/embed/xMiv10KdaNU?si=PwS0ULo46hEJvlOc" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
                   </div>
+              </Window>
+
+              <Window id="Events" ref={ref} closeable={true} position={{x: 1010, y: 350}} states={states}>
+                <div className = "w-[410px] max-h-[225px] overflow-scroll p-5 font-monospace text-center text-white bg-terminal rounded-b-lg">
+                        {data ? data[1].map((event, index) => 
+                          <div className = "bg-polarblue/75 p-2 m-2 text-left rounded-md" key={index}>
+                            <b>{event.title}</b> - {event.leader}
+                            <div className = "text-sm flex flex-row items-center gap-1"><CalendarDateRangeIcon className = "size-4 inline"/><a href = {event.cal}>{(new Date(event.start)).toLocaleString()}</a></div>
+                            </div>
+                        ) : <div>No upcoming events :{'('}</div>}
+                </div>
               </Window>
               </div>
           </div>
